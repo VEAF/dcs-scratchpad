@@ -632,30 +632,32 @@ local function loadScratchpad()
         --   precision = 3: the count of minute decimal places
         --   lonDegreesWidth = 2: the min. width of the longitude degrees padded with zeroes
 
+        local result = {DMS = true, DDM = true, MGRS = true}
         local ac = DCS.getPlayerUnitType()
-        if ac == "FA-18C_hornet" then
-            return {DMS = true, DDM = {precision = 4}, MGRS = true}
-        elseif string.sub(ac, 1, 5) == "A-10C" or ac == "AV-8B" then
-            return {DDM = true, MGRS = true}
-        elseif string.sub(ac, 1, 4) == "F-14" then
-            return {DDM = {precision = 1}}
-        elseif ac == "F-15ESE" then
-            return {DDM = {precision = 3, lonDegreesWidth = 3}, MGRS = true}
-        elseif ac == "M-2000C" then
-            return {DDM = {precision = 1, lonDegreesWidth = 3}}
-        elseif ac == "F-16C_50" then
-            return {DDM = {lonDegreesWidth = 3}, MGRS = true}
-        elseif ac == "AH-64D_BLK_II" then
-            return {DDM = {precision = 2, lonDegreesWidth = 3}, MGRS = true}
-        elseif string.sub(ac, 1, 5) == "Ka-50" then
-            return {DDM = {precision = 1, lonDegreesWidth = 3, showNegative = true}}
-        elseif string.sub(ac, 1, 5) == "SA342" then
-            return {DDM = {precision = 1}}
-        elseif ac == "Hercules" then
-            return {DDM = {precision = 3, lonDegreesWidth = 3}}
-        else
-            return {DMS = true, DDM = true, MGRS = true}
+        if ac then -- sometimes there is no player unit (game master, spectator)
+            if ac == "FA-18C_hornet" then
+                result = {DMS = true, DDM = {precision = 4}, MGRS = true}
+            elseif string.sub(ac, 1, 5) == "A-10C" or ac == "AV-8B" then
+                result = {DDM = true, MGRS = true}
+            elseif string.sub(ac, 1, 4) == "F-14" then
+                result = {DDM = {precision = 1}}
+            elseif ac == "F-15ESE" then
+                result = {DDM = {precision = 3, lonDegreesWidth = 3}, MGRS = true}
+            elseif ac == "M-2000C" then
+                result = {DDM = {precision = 1, lonDegreesWidth = 3}}
+            elseif ac == "F-16C_50" then
+                result = {DDM = {lonDegreesWidth = 3}, MGRS = true}
+            elseif ac == "AH-64D_BLK_II" then
+                result = {DDM = {precision = 2, lonDegreesWidth = 3}, MGRS = true}
+            elseif string.sub(ac, 1, 5) == "Ka-50" then
+                result = {DDM = {precision = 1, lonDegreesWidth = 3, showNegative = true}}
+            elseif string.sub(ac, 1, 5) == "SA342" then
+                result = {DDM = {precision = 1}}
+            elseif ac == "Hercules" then
+                result = {DDM = {precision = 3, lonDegreesWidth = 3}}
+            end
         end
+        return result
     end
 
     local function insertCoordinates()
